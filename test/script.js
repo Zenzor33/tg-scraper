@@ -53,10 +53,10 @@ const messages = function (user) {
     // check for items = sequential messages
     // loop through length of items and append each item to messages
   }
+  console.log(obj);
 };
 
-messages("Ryuk 1776");
-console.log(obj);
+messages("Bull Jesus aka Fake Randy aka the oracle");
 
 // 2) If program detects author -> wipe & replace array author and messages
 // 3) If program detects .joined class, push to array

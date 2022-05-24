@@ -53,7 +53,8 @@ const messages = function (user) {
   }
 };
 
-messages("Ryuk 1776");
+// messages("Ryuk 1776");
+messages("Bull Jesus aka Fake Randy aka the oracle");
 console.log(obj);
 
 // 2) If program detects author -> wipe & replace array author and messages
