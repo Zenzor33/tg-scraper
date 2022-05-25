@@ -11,55 +11,45 @@ const getMessage = (childNode) => {
   if (element !== null) return element.outerText;
 };
 
-const adjustObject = function (author, message) {
+const adjustObject = (author, message) => {
   obj["author"] = author;
   obj["messages"].push(message);
 };
-
-// 1) Program loops though history div
 
 const messages = function (user) {
   const containerChildrenLength = container.children.length;
   let currentAuthor = "";
 
   for (let i = 0; i < containerChildrenLength; i++) {
-    // loops through each child of container
+    // loops through each child of the container div
     let childNode = container.children[i];
-    // Next message with new author
-    const newAuthor = childNode.className === "message default clearfix";
-    const sequentialMessages =
-      childNode.className === "message default clearfix joined";
     let authorNode = childNode.querySelector(".from_name");
 
-    // check for new authors
-    if (newAuthor) {
-      currentAuthor = authorNode.outerText;
-      //   console.log(currentAuthor);
+    // Returns true if current message and previous message is written by a different user
+    const newAuthorDiv = childNode.className === "message default clearfix";
+
+    // Returns true if current message and previous message are written by the same user
+    const sequentialMessagesDiv =
+      childNode.className === "message default clearfix joined";
+
+    // Check if current message and previous message are written by different users
+    if (newAuthorDiv) {
+      currentAuthor = authorNode.outerText; // assigns the username of the author of the iterated message.
     }
 
-    // let author = authorNode.outerText // doesn't work
-    if (newAuthor && authorNode.outerText === user) {
+    // code ```let author = authorNode.outerText``` doesn't work
+    if (
+      // Check if message's author matches the search paraemter for user
+      (newAuthorDiv && authorNode.outerText === user) ||
+      // Check if sequential message's author matches the search parameter for user
+      (sequentialMessagesDiv && currentAuthor === user)
+    ) {
       let message = getMessage(childNode);
       adjustObject(user, message);
     }
-
-    if (sequentialMessages && currentAuthor === user) {
-      let message = getMessage(childNode);
-      adjustObject(user, message);
-    }
-    // check for items = sequential messages
-    // loop through length of items and append each item to messages
-
-    // check for items = sequential messages
-    // loop through length of items and append each item to messages
   }
   console.log(obj);
 };
-
-messages("Bull Jesus aka Fake Randy aka the oracle");
-
-// 2) If program detects author -> wipe & replace array author and messages
-// 3) If program detects .joined class, push to array
 
 ("use strict");
 
