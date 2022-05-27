@@ -6,8 +6,8 @@ const obj = {
   messages: [],
 };
 
-const getMessage = (childNode) => {
-  const element = childNode.querySelector(".text");
+const getMessage = (childElement) => {
+  const element = childElement.querySelector(".text");
   if (element !== null) return element.outerText;
 };
 
@@ -16,26 +16,26 @@ const updateObject = (author, message) => {
   obj["messages"].push(message);
 };
 
-const fetchUserMessages = function (user) {
-  const containerChildrenLength = container.children.length;
-  let nextAuthor = "";
-  const desiredAuthor = user;
-  for (let i = 0; i < containerChildrenLength; i++) {
-    let childNode = container.children[i];
-    let authorNode = childNode.querySelector(".from_name");
+const fetchUserMessages = function (desiredAuthor) {
+  const childElementsLength = container.children.length;
+  let newAuthor = "";
 
-    const nextAuthorFound = childNode.className === "message default clearfix";
-    const sequentialMessagesFound =
-      childNode.className === "message default clearfix joined"; // Sequence of messages in the chat group written by the same author
+  for (let i = 0; i < childElementsLength; i++) {
+    let childElement = container.children[i];
+    let authorDiv = childElement.querySelector(".from_name");
 
-    if (nextAuthorFound) nextAuthor = authorNode.outerText;
+    const isNewAuthor = childElement.className === "message default clearfix";
+    const isSameAuthor =
+      childElement.className === "message default clearfix joined";
+
+    if (isNewAuthor) newAuthor = authorDiv.outerText;
 
     if (
-      (nextAuthorFound && nextAuthor === desiredAuthor) ||
-      (sequentialMessagesFound && nextAuthor === desiredAuthor)
+      (isNewAuthor && newAuthor === desiredAuthor) ||
+      (isSameAuthor && newAuthor === desiredAuthor)
     ) {
-      let message = getMessage(childNode);
-      updateObject(user, message);
+      let message = getMessage(childElement);
+      updateObject(desiredAuthor, message);
     }
   }
   console.log(obj);
