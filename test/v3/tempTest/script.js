@@ -3,7 +3,7 @@
 const container = document.querySelector(".history");
 const users = {};
 
-const classNames = {
+const classifier = {
   isDifferentUserDiv: "message default clearfix",
   isSameUserDiv: "message default clearfix joined",
   checkIsDifferentUserDiv(className) {
@@ -19,11 +19,10 @@ const getMessage = (childElement) => {
   if (element !== null) return element.outerText;
 };
 
-const updateSubObject = (currentUser, currentMessage, element) => {
-  // check if user exists in object
+const updateSubObject = (currentUser, element) => {
   let userExists = users[currentUser];
+  let currentMessage = getMessage(element);
   if (!userExists) {
-    // create subobject with user & current message
     currentUserObj = new User(currentUser, currentMessage);
     users[currentUser] = currentUserObj;
     users[currentUser].pushMessage(currentMessage);
@@ -32,39 +31,25 @@ const updateSubObject = (currentUser, currentMessage, element) => {
   }
 };
 
-const fetchUserMessages = function (user) {
+const fetchUserMessages = function () {
   const childElementsLength = container.children.length;
   let currentUser = "";
   for (let i = 0; i < childElementsLength; i++) {
     let childElement = container.children[i];
-    let isSameUserDiv = classNames.checkIsSameUserDiv(childElement.className);
-    let isDifferentUserDiv = classNames.checkIsDifferentUserDiv(
+    let isSameUserDiv = classifier.checkIsSameUserDiv(childElement.className);
+    let isDifferentUserDiv = classifier.checkIsDifferentUserDiv(
       childElement.className
     );
 
     if (isDifferentUserDiv) {
-      // update currentUser
       currentUser = getNewUserName(childElement);
-      currentMessage = getMessage(childElement);
-      updateSubObject(currentUser, currentMessage, childElement);
+      updateSubObject(currentUser, childElement);
     }
     if (isSameUserDiv) {
-      currentMessage = getMessage(childElement);
-      updateSubObject(currentUser, currentMessage, childElement);
+      updateSubObject(currentUser, childElement);
     }
   }
 };
-
-/*
-Loops
-- If (differentUserDiv) {
-  - updateCurrentUser
-  - updateSubObject(currentUser, currentMessage)
-}
-- If (sameUserDiv) {
-  - updateSubObject(currentUser, currentMessage)
-}
-*/
 
 // create object constructor
 function User(author, message) {
