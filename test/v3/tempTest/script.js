@@ -34,22 +34,37 @@ const updateSubObject = (currentUser, currentMessage, element) => {
 
 const fetchUserMessages = function (user) {
   const childElementsLength = container.children.length;
+  let currentUser = "";
   for (let i = 0; i < childElementsLength; i++) {
     let childElement = container.children[i];
-    let currentUser = "";
     let isSameUserDiv = classNames.checkIsSameUserDiv(childElement.className);
     let isDifferentUserDiv = classNames.checkIsDifferentUserDiv(
       childElement.className
     );
 
-    if (isDifferentUserDiv || isSameUserDiv) {
+    if (isDifferentUserDiv) {
       // update currentUser
       currentUser = getNewUserName(childElement);
       currentMessage = getMessage(childElement);
       updateSubObject(currentUser, currentMessage, childElement);
     }
+    if (isSameUserDiv) {
+      currentMessage = getMessage(childElement);
+      updateSubObject(currentUser, currentMessage, childElement);
+    }
   }
 };
+
+/*
+Loops
+- If (differentUserDiv) {
+  - updateCurrentUser
+  - updateSubObject(currentUser, currentMessage)
+}
+- If (sameUserDiv) {
+  - updateSubObject(currentUser, currentMessage)
+}
+*/
 
 // create object constructor
 function User(author, message) {
