@@ -2,6 +2,17 @@
 
 const container = document.querySelector(".history");
 const users = {};
+const userInput = document.querySelector("#searchForUser");
+const submitButton = document.querySelector(".submitBtn");
+
+submitButton.addEventListener("click", getUserObj);
+
+function getUserObj(e) {
+  e.preventDefault();
+  let desiredAuthor = userInput.value;
+  fetchUserMessages();
+  console.log(users[desiredAuthor]);
+}
 
 const classifier = {
   isDifferentUserDiv: "message default clearfix",
@@ -65,8 +76,8 @@ User.prototype.pushMessage = function (message) {
 const getNewUserName = (element) =>
   element.querySelector(".from_name")?.innerText;
 
-fetchUserMessages();
-console.log(users);
+// fetchUserMessages();
+// console.log(users);
 
 ("use strict");
 
